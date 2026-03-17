@@ -1,0 +1,790 @@
+Prac 1
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Admission Form</title>
+
+<style>
+body{
+font-family: Arial;
+}
+
+form{
+width:300px;
+margin:auto;
+}
+
+input, select{
+width:100%;
+margin:5px 0;
+padding:5px;
+}
+
+button{
+width:100%;
+padding:8px;
+background:blue;
+color:white;
+border:none;
+}
+</style>
+
+</head>
+<body>
+
+<h2 align="center">Student Admission Form</h2>
+
+<form id="form">
+
+First Name:
+<input type="text" required>
+
+Middle Name:
+<input type="text">
+
+Last Name:
+<input type="text" required>
+
+Contact Number:
+<input type="tel" required>
+
+Email:
+<input type="email">
+
+Address:
+<input type="text" required>
+
+Date of Birth:
+<input type="date" required>
+
+Gender: <br><br>
+Male: <input type="radio" name="g"><br><br>
+Female: <input type="radio" name="g"> <br><br>
+Other: <input type="radio" name="g"> 
+<br><br>
+Course:
+<select required>
+<option value="">Select Course</option>
+<option>Science</option>
+<option>Commerce</option>
+<option>Arts</option>
+</select>
+
+<button type="button" onclick="submitForm()">Submit</button>
+
+</form>
+
+<script>
+function submitForm(){
+alert("Form Submitted Successfully");
+document.getElementById("form").reset();
+}
+</script>
+
+</body>
+</html>
+
+----------------------------------------------------------------
+
+prac2 : Amazon website redesign
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Shopping Website</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+}
+
+nav{
+background:orange;
+padding:10px;
+color:white;
+}
+
+input{
+padding:5px;
+width:200px;
+}
+
+button{
+padding:6px;
+background:black;
+color:white;
+border:none;
+}
+
+.product{
+border:1px solid gray;
+width:200px;
+margin:10px auto;
+padding:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<nav>
+<h2>Online Store</h2>
+</nav>
+
+<h3>Search Product</h3>
+
+<input type="text" id="product" placeholder="Enter product name">
+<button onclick="searchProduct()">Search</button>
+
+<h3>Popular Products</h3>
+
+<div class="product">
+Mobile Phone<br>
+Price: ₹15000
+</div>
+
+<div class="product">
+Laptop<br>
+Price: ₹45000
+</div>
+
+<div class="product">
+Headphones<br>
+Price: ₹2000
+</div>
+
+<script>
+function searchProduct(){
+var p = document.getElementById("product").value;
+if(p==""){
+alert("Enter product name");
+}else{
+alert("Searching: " + p);
+}
+}
+</script>
+
+</body>
+</html>
+--------------------------------------------------------------------------------------------
+
+Prac 3:
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mumbai Tourist Navigator</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+body{
+margin:0;
+display:flex;
+font-family:Arial;
+height:100vh;
+}
+
+#menu{
+width:250px;
+padding:15px;
+background:#f0f0f0;
+}
+
+input,select,button{
+width:100%;
+margin:5px 0;
+padding:5px;
+}
+
+#map{
+flex:1;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="menu">
+
+<h3>Tourist Navigator</h3>
+
+<label>Starting Location</label>
+<input type="text" placeholder="Enter your location">
+
+<label>Travel Mode</label>
+<select>
+<option>Walking</option>
+<option>Driving</option>
+<option>Bus</option>
+</select>
+
+<button onclick="showRoute()">Get Directions</button>
+
+<h4>Destination</h4>
+<p>CSMT Station<br>Mumbai</p>
+
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+var map = L.map('map').setView([18.9402,72.8356],13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+var marker = L.marker([18.9402,72.8356]).addTo(map);
+
+marker.bindPopup("CSMT Station").openPopup();
+
+function showRoute(){
+alert("Showing route to CSMT Station");
+}
+
+</script>
+
+</body>
+</html>
+
+----------------------------------------------------------------------------
+prac 4
+
+prac 4
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fitness Training Planner</title>
+</head>
+
+<body>
+
+<h1 align="center">Fitness Training Planner</h1>
+<hr>
+
+<!-- Horizontal Menu -->
+<h2>Horizontal Menu</h2>
+
+<table border="1" width="100%">
+<tr align="center">
+<td><a href="#">Home</a></td>
+<td><a href="#">Workout Plan</a></td>
+<td><a href="#">Diet Plan</a></td>
+<td><a href="#">Progress</a></td>
+<td><a href="#">Trainer</a></td>
+<td><a href="#">Contact</a></td>
+</tr>
+</table>
+
+<br>
+<hr>
+
+<!-- Vertical Menu -->
+<h2>Vertical Menu</h2>
+
+<table border="1">
+<tr>
+<td>
+<ul>
+<li><a href="#">Dashboard</a></li>
+<li><a href="#">Daily Workout</a></li>
+<li><a href="#">Weekly Schedule</a></li>
+<li><a href="#">Exercise Library</a></li>
+<li><a href="#">Nutrition Guide</a></li>
+<li><a href="#">Track Progress</a></li>
+<li><a href="#">Settings</a></li>
+</ul>
+</td>
+
+<td width="400">
+<h3>Welcome to Fitness Training Planner</h3>
+
+<p>This app helps users plan their fitness training routine.</p>
+
+<p>You can create workout schedules, track progress and
+follow a healthy diet plan.</p>
+
+<h4>Features</h4>
+<ul>
+<li>Create daily workout plans</li>
+<li>View weekly exercise schedule</li>
+<li>Track fitness progress</li>
+<li>Follow nutrition guidelines</li>
+</ul>
+
+</td>
+</tr>
+</table>
+
+
+<h3>Create Your Workout Plan</h3>
+
+<form>
+<label>Choose Workout Type:</label><br>
+<select>
+<option>Cardio</option>
+<option>Strength Training</option>
+<option>Yoga</option>
+<option>HIIT</option>
+</select>
+
+<br><br>
+
+<label>Workout Duration:</label><br>
+<input type="text" placeholder="Minutes">
+
+<br><br>
+
+<label>Training Level:</label><br>
+<input type="radio" name="level"> Beginner
+<input type="radio" name="level"> Intermediate
+<input type="radio" name="level"> Advanced
+
+<br><br>
+
+<input type="submit" value="Save Plan">
+<input type="reset" value="Clear">
+
+</form>
+
+<hr>
+
+<p align="center">Fitness Training Planner App</p>
+
+</body>
+</html>
+
+-----------------------------------------------------------------------------
+
+prac 5
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wedding Invitation</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f5f5f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.card{
+width:350px;
+height:520px;
+background:white;
+border:3px solid #c8a96a;
+text-align:center;
+padding:30px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.title{
+font-size:20px;
+letter-spacing:2px;
+color:#c8a96a;
+}
+
+.names{
+font-size:32px;
+margin:40px 0;
+color:#8b5e3c;
+}
+
+.heart{
+font-size:22px;
+color:red;
+}
+
+.info{
+margin:25px 0;
+font-size:16px;
+}
+
+.footer{
+margin-top:40px;
+font-style:italic;
+color:#777;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card" onclick="showMsg()">
+
+<div class="title">Wedding Invitation</div>
+
+<div class="names">
+Rahul <span class="heart"> WEDS </span> Priya
+</div>
+
+<p>Together with their families<br>
+invite you to celebrate their marriage</p>
+
+<div class="info">
+ 14 June 2026
+</div>
+
+<div class="info">
+ Rose Garden Hall<br>
+Mumbai
+</div>
+
+<div class="footer">
+Dinner & Celebration to follow
+</div>
+
+</div>
+
+<script>
+function showMsg(){
+alert("Welcome to Wedding Invitation");
+}
+</script>
+
+</body>
+</html>
+
+-----------------------------------------------------------------------------
+
+prac 6
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Typography and Readability</title>
+
+<style>
+
+body{
+font-family: Arial;
+padding:20px;
+}
+
+/* Poor Typography */
+.bad{
+font-size:12px;
+font-family:"Times New Roman";
+line-height:1;
+letter-spacing:2px;
+color:gray;
+padding:10px;
+margin-bottom:30px;
+}
+
+/* Good Typography */
+.good{
+font-size:18px;
+font-family:Arial;
+line-height:1.6;
+color:black;
+padding:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Effect of Typography on Readability</h2>
+
+<h3>Poor Typography</h3>
+<div class="bad">
+My Name is Mayuresh and I am a student of Computer applications.
+ I am learning about Human Computer Interaction and how typography affects readability.
+</div>
+
+<h3>Good Typography</h3>
+<div class="good">
+My Name is Mayuresh and I am a student of Computer applications.
+ I am learning about Human Computer Interaction and how typography affects readability.
+</div>
+
+</body>
+</html>
+
+------------------------------------------------------------------------------
+prac 7 
+
+void main() {
+  runApp(MaterialApp(
+    home: TVRemote(),
+    debugShowCheckedModeBanner: false,
+  ));
+}
+
+class TVRemote extends StatefulWidget {
+  @override
+  _TVRemoteState createState() => _TVRemoteState();
+}
+
+class _TVRemoteState extends State<TVRemote> {
+
+  String result = "TV Remote";
+
+  void press(String text){
+    setState(() {
+      result = text;
+    });
+  }
+
+  Widget btn(String name){
+    return ElevatedButton(
+      onPressed: () => press(name),
+      child: Text(name),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(result),
+        centerTitle: true,
+        backgroundColor: Colors.red,
+      ),
+
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              btn("Power On"),
+              SizedBox(width:10),
+              btn("Power Off"),
+            ],
+          ),
+
+          SizedBox(height:20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              btn("Vol+"),
+              SizedBox(width:10),
+              btn("Vol-"),
+            ],
+          ),
+
+          SizedBox(height:20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [btn("Up")],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              btn("Left"),
+              SizedBox(width:20),
+              btn("OK"),
+              SizedBox(width:20),
+              btn("Right"),
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [btn("Down")],
+          ),
+
+          SizedBox(height:20),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              btn("Back"),
+              SizedBox(width:10),
+              btn("Menu"),
+            ],
+          ),
+
+        ],
+      ),
+    );
+  }
+}
+
+------------------------------------------------------------------------
+
+prac 8
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gym Trainer</title>
+
+<style>
+body{
+font-family: Arial;
+margin:0;
+}
+
+/* Navbar */
+nav{
+background:black;
+color:white;
+padding:10px;
+text-align:center;
+}
+
+/* Sections */
+.section{
+padding:30px;
+text-align:center;
+}
+
+.btn{
+background:red;
+color:white;
+padding:10px;
+border:none;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<nav>
+<h2>Rahul Fitness Trainer</h2>
+</nav>
+
+<div class="section">
+<h2>Welcome</h2>
+<p>Transform your body with professional training</p>
+<button class="btn" onclick="join()">Join Now</button>
+</div>
+
+<div class="section">
+<h2>About Me</h2>
+<p>I am a certified gym trainer with 5+ years of experience in fitness and bodybuilding.</p>
+</div>
+
+<div class="section">
+<h2>Services</h2>
+<p>Personal Training<br>
+Weight Loss<br>
+Muscle Gain</p>
+</div>
+
+<div class="section">
+<h2>Contact</h2>
+<p>Phone: 9876543210<br>Email: trainer@gmail.com</p>
+</div>
+
+<script>
+function join(){
+alert("Thank you for joining!");
+}
+</script>
+
+</body>
+</html>
+
+------------------------------------------------------------------------------------
+ 
+pract 10
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>UMTEL Evaluation</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+}
+
+.box{
+border:1px solid gray;
+width:320px;
+margin:auto;
+padding:20px;
+}
+
+button{
+margin:5px;
+padding:5px 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Usability Evaluation</h2>
+
+<div class="box">
+
+<h3 id="q">Question</h3>
+
+<button onclick="ans(5)">Very Good</button>
+<button onclick="ans(4)">Good</button>
+<button onclick="ans(3)">Average</button>
+<button onclick="ans(2)">Poor</button>
+<button onclick="ans(1)">Very Poor</button>
+
+</div>
+
+<h3 id="result">Score: 0%</h3>
+
+<script>
+
+let questions = [
+"Website is easy to use",
+"Content is well organized",
+"Navigation is simple",
+"Text is readable",
+"Links are working properly"
+];
+
+let i = 0;
+let score = 0;
+
+document.getElementById("q").innerHTML = questions[i];
+
+function ans(v){
+score += v;
+i++;
+
+let percent = (score/(i*5))*100;
+
+document.getElementById("result").innerHTML =
+"Score: "+percent.toFixed(0)+"%";
+
+if(i < questions.length){
+document.getElementById("q").innerHTML = questions[i];
+}
+else{
+document.getElementById("q").innerHTML = "Evaluation Completed";
+}
+}
+
+</script>
+
+</body>
+</html>
+
