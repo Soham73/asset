@@ -1,790 +1,924 @@
-Prac 1
+prac 1 : Create a simple calculator application using servlet.
+
+index.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="calc" method="get">
+            Enter 1st num <input type="text" name="txtN1"><br>
+            Enter 2nd num <input type="text" name="txtN2"><br>
+            Select an Operation <br>
+            <input type="radio" name="opr" value="+">Add
+            <input type="radio" name="opr" value="-">Sub
+            <input type="radio" name="opr" value="*">Multiply
+            <input type="radio" name="opr" value="/">Divide<br>
+            <input type="reset">
+            <input type="submit" value="Calculate">
+    </body>
+</html>
+
+clac.java (servlet)
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class calc extends HttpServlet {
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            double n1 = Double.parseDouble(request.getParameter("txtN1"));
+                double n2 = Double.parseDouble(request.getParameter("txtN2"));
+                double result = 0;
+                String opr = request.getParameter("opr");
+                if(opr.equals("+")) result=n1+n2;
+                if(opr.equals("-")) result=n1-n2;
+                if(opr.equals("*")) result=n1*n2;
+                if(opr.equals("/")) result=n1/n2;
+                out.println("<h1>Result"+result);
+        }
+    }
+}
+
+-------------------------------------------------------------------------------------------
+
+prac 2: Create a simple servlet application to find entered number is Even or Odd.
+
+index.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="oddeven" method="post" >
+            enter a number: <input type="text" name="num"><br>
+            <input type="submit" value="check">
+            
+        </form>
+    </body>
+</html>
+
+oddeven.java (servlet)
+
+package my;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+public class oddeven extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+ 
+            int number = Integer.parseInt(request.getParameter("num"));
+            if(number%2==0){
+                out.println("This is the Even Number");
+            }
+            else{
+                out.println("This is the Odd Number");
+            }
+        }
+    }
+------------------------------------------------------------------------------------------
+
+prac 3 : Create a simple servlet application to find Factorial of entered.
+
+index.html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Factorial</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="fact" method="post">
+        Enter the Number
+        <input type="text" size="20" name="text"><br><br>
+        <input type="submit" value="submit">
+        </form>
+    </body>
+</html>
+
+fact.java(servlet)
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class fact extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+        
+            String s = request.getParameter("text");
+            int num = Integer.parseInt(s);
+            long factorial = 1;
+            if (num<0){
+            out.println("factorial is not defined for negative numbers");
+            }
+            else{
+            for(int i=1; i<=num; i++){
+            factorial = factorial*i;
+            }
+            out.println("factorial "+num+" is: "+factorial);
+          }
+    	}
+      }
+}
+
+------------------------------------------------------------------------------------------
+
+pract 4 : Create a servlet for a login page. If the username and password are correct then it says message “Hello <username>” else a message “login failed”
+
+index.html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Form</title>
+    </head>
+    <body>
+<form action="LoginServlet" method="Get">
+ Enter User ID<input type="text" name="txtId"><br>
+ Enter Password<input type="password" name="txtPass"><br>
+<input type="reset"><input type="submit" value=" Click to Login " >
+</form>
+    </body>
+</html>
+
+LoginServlet (servlet)
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class LoginServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+          
+            String uname = request.getParameter("txtId");
+            String upass = request.getParameter("txtPass");
+            if(uname.equals("admin") && upass.equals("12345")){
+            out.println("<body bgcolor=blue >");
+            out.println("<h1> Welcome !!! "+uname+"</h1>");
+            }
+            else{
+            out.println("<body bgcolor=red >");out.println("<h1> Login Fail !!! </h1>");
+            }
+        }
+    }
+
+}
+
+------------------------------------------------------------------------------------------
+
+
+prac 6: Using Request Dispatcher Interface create a Servlet which will validate the passwordentered by the user, if 
+the user has entered "Servlet" as password, then he will
+be forwarded to Welcome Servlet else the user will stay
+on the index.html page and anerror message will be
+displayed.
+
+index.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Form</title>
+    </head>
+    <body>
+        <form action="LoginServlet" method="get" >
+        Enter User ID<input type="text" name="txtId"><br>
+        Enter Password<input type="password" name="txtPass"><br>
+        <input type="reset">
+        <input type="submit" value=" Click to Login " >
+</form>
+    </body>
+</html>
+
+LoginServlet
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class LoginServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            String uname = request.getParameter("txtId");
+            String upass = request.getParameter("txtPass");
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            if(uname.equals("admin") && upass.equals("123456")){
+            RequestDispatcher rd = request.getRequestDispatcher("WelcomeServlet");
+            rd.forward(request, response);
+            }
+            else{
+            out.println("<body bgcolor=red >");
+            out.println("<h1> Login Fail !!! </h1>");
+            RequestDispatcher rd = request.getRequestDispatcher("index.html");
+            rd.include(request, response);
+ }
+        }
+    }
+}
+
+WelcomeServlet
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class WelcomeServlet extends HttpServlet {
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String uname = request.getParameter("txtId");
+            out.println("<body bgcolor=green >");
+            out.println("<h1>Welcome " + uname + "</h1>");
+            out.println("<h2>Login Successful</h2>");
+        }
+    }
+}
+
+---------------------------------------------------------------------------
+
+prac 7: Create a servlet that uses Cookies to store the number of
+times a user has visited servlet.
+
+index.html
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Student Admission Form</title>
-
-<style>
-body{
-font-family: Arial;
-}
-
-form{
-width:300px;
-margin:auto;
-}
-
-input, select{
-width:100%;
-margin:5px 0;
-padding:5px;
-}
-
-button{
-width:100%;
-padding:8px;
-background:blue;
-color:white;
-border:none;
-}
-</style>
-
+    <title>Cookie Demo</title>
 </head>
 <body>
+    <form action="Page1" method="get">
+    Enter Your Name <input type="text" name="txtName"><br>
+    <input type="submit" value="Click to Enter">
+    </form>
+</body>
+</html>
 
-<h2 align="center">Student Admission Form</h2>
+Page1
 
-<form id="form">
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-First Name:
-<input type="text" required>
+public class Page1 extends HttpServlet {
 
-Middle Name:
-<input type="text">
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
 
-Last Name:
-<input type="text" required>
+            out.println("<body bgcolor=pink >");
+            String uname = request.getParameter("txtName");
+            out.println("<h1>~~~ Welcome "+uname+"</h1>");
+            Cookie ck1 = new Cookie("username", uname);
+            Cookie ck2 = new Cookie("visit","1");
+            response.addCookie(ck1); 
+	    response.addCookie(ck2);
+            out.println("<h1><a href=Page2 >Click to visit Page 2 </a></h1>");
+ 
+        }
+    }
 
-Contact Number:
-<input type="tel" required>
 
-Email:
-<input type="email">
+}
 
-Address:
-<input type="text" required>
+Page2
 
-Date of Birth:
-<input type="date" required>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+public class Page2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            out.println("<body bgcolor=yellow >");
+            Cookie [] ck = request.getCookies();
+            for(int i=0;i<ck.length;i++){
+            if(ck[i].getName().equals("visit")){
+            int count = Integer.parseInt(ck[i].getValue())+1;
+            out.println("<h1>Visit No : "+count+"</h1>");
+            ck[i] = new Cookie("visit",count+"");
+            response.addCookie(ck[i]);
+            }
+            else {
+            out.println(ck[i].getName()+ " = "+ck[i].getValue()); }
+           
+        }
+    }
 
-Gender: <br><br>
-Male: <input type="radio" name="g"><br><br>
-Female: <input type="radio" name="g"> <br><br>
-Other: <input type="radio" name="g"> 
-<br><br>
-Course:
-<select required>
-<option value="">Select Course</option>
-<option>Science</option>
-<option>Commerce</option>
-<option>Arts</option>
-</select>
+    }
+}
 
-<button type="button" onclick="submitForm()">Submit</button>
+------------------------------------------------------------------------------------
 
+prac 8: Create a servlet demonstrating the use of session creation
+and destruction. Also check whether the user has visited
+this page first time or has visited earlier also using
+sessions.
+
+index.html
+
+<!DOCTYPE html>
+<html> 
+<head>
+    <title>Session Demo</title>
+</head>
+<form action="Page1" method="get" >
+ Enter User ID <input type="text" name="txtName"><br>
+<input type="reset" ><input type="submit" >
 </form>
 
-<script>
-function submitForm(){
-alert("Form Submitted Successfully");
-document.getElementById("form").reset();
-}
-</script>
-
-</body>
+    </body>
 </html>
 
-----------------------------------------------------------------
+Page1.java
 
-prac2 : Amazon website redesign
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class Page1 extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            HttpSession hs = request.getSession(true);
+            if(hs.isNew()){
+            out.println("<body bgcolor=yellow>");
+            String name = request.getParameter("txtName");
+            hs.setAttribute("uname", name);
+            hs.setAttribute("visit", "1");
+            out.println("<h1>Welcome First Time</h1>");
+            }
+            else{
+            out.println("<h1>Welcome Again</h1>");
+            int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1;
+            out.println("<h1>You Visited "+visit+"Times</h1>");
+            hs.setAttribute("visit", ""+visit);
+            }
+            out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>");
+            out.println("<h1><a href=LogoutServlet>Click to Terminate Session </a></h1>");
+            
+        }
+    }
+
+}
+
+page2.java
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class Page2 extends HttpServlet {
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            HttpSession hs = request.getSession(false);
+            out.println("<h1>Welcome Again on Page No. 2</h1>");
+            int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1;
+            out.println("<h1>You Visited "+visit+"Times</h1>");
+            hs.setAttribute("visit", ""+visit);
+            out.println("<h1>Your Session ID "+hs.getId()+"</h1>");
+            out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>");
+            out.println("<h1><a href=Page1>Click for Page 1 </a></h1>");
+            out.println("<h1><a href=Page3>Click for Page 3 </a></h1>");
+            out.println("<h1><a href=Page4>Click for Page 4 </a></h1>");
+            out.println("<h1><a href=LogoutServlet>Click for Terminate Session </a></h1>");
+        }
+    }
+
+    
+}
+
+LogoutServle.java
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class LogoutServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            javax.servlet.http.HttpSession hs = request.getSession();
+            if(hs != null) hs.invalidate();
+            out.println("<h1>You are Logged out now........</h1>");
+        }
+    }
+
+    
+
+}
+
+---------------------------------------------------------------------------------------
+prac9 : Develop Simple Servlet Question Answer ( Quiz )
+Application.
+
+index.html
 
 <!DOCTYPE html>
 <html>
-<head>
-<title>Simple Shopping Website</title>
-
-<style>
-body{
-font-family: Arial;
-text-align:center;
-}
-
-nav{
-background:orange;
-padding:10px;
-color:white;
-}
-
-input{
-padding:5px;
-width:200px;
-}
-
-button{
-padding:6px;
-background:black;
-color:white;
-border:none;
-}
-
-.product{
-border:1px solid gray;
-width:200px;
-margin:10px auto;
-padding:10px;
-}
-</style>
-
-</head>
-
-<body>
-
-<nav>
-<h2>Online Store</h2>
-</nav>
-
-<h3>Search Product</h3>
-
-<input type="text" id="product" placeholder="Enter product name">
-<button onclick="searchProduct()">Search</button>
-
-<h3>Popular Products</h3>
-
-<div class="product">
-Mobile Phone<br>
-Price: ₹15000
-</div>
-
-<div class="product">
-Laptop<br>
-Price: ₹45000
-</div>
-
-<div class="product">
-Headphones<br>
-Price: ₹2000
-</div>
-
-<script>
-function searchProduct(){
-var p = document.getElementById("product").value;
-if(p==""){
-alert("Enter product name");
-}else{
-alert("Searching: " + p);
-}
-}
-</script>
-
-</body>
-</html>
---------------------------------------------------------------------------------------------
-
-Prac 3:
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Mumbai Tourist Navigator</title>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-<style>
-body{
-margin:0;
-display:flex;
-font-family:Arial;
-height:100vh;
-}
-
-#menu{
-width:250px;
-padding:15px;
-background:#f0f0f0;
-}
-
-input,select,button{
-width:100%;
-margin:5px 0;
-padding:5px;
-}
-
-#map{
-flex:1;
-}
-</style>
-
-</head>
-
-<body>
-
-<div id="menu">
-
-<h3>Tourist Navigator</h3>
-
-<label>Starting Location</label>
-<input type="text" placeholder="Enter your location">
-
-<label>Travel Mode</label>
-<select>
-<option>Walking</option>
-<option>Driving</option>
-<option>Bus</option>
-</select>
-
-<button onclick="showRoute()">Get Directions</button>
-
-<h4>Destination</h4>
-<p>CSMT Station<br>Mumbai</p>
-
-</div>
-
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-
-var map = L.map('map').setView([18.9402,72.8356],13);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-var marker = L.marker([18.9402,72.8356]).addTo(map);
-
-marker.bindPopup("CSMT Station").openPopup();
-
-function showRoute(){
-alert("Showing route to CSMT Station");
-}
-
-</script>
-
+    <head>
+    <title>Quiz App</title>
+    </head>
+    <body>
+    <h1>Welcome to Quiz</h1>
+    <a href="QuizServlet">Start Quiz</a>
 </body>
 </html>
 
-----------------------------------------------------------------------------
-prac 4
+QuizServlet.java
 
-prac 4
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+public class QuizServlet extends HttpServlet {
+  
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+             out.println("<form action='ResultServlet'>");
+    
+        out.println("<h3>1. Capital of India?</h3>");
+        out.println("<input type='radio' name='q1' value='Delhi'>Delhi<br>");
+        out.println("<input type='radio' name='q1' value='Mumbai'>Mumbai<br>");
+
+        out.println("<h3>2. 2 + 2 = ?</h3>");
+        out.println("<input type='radio' name='q2' value='4'>4<br>");
+        out.println("<input type='radio' name='q2' value='5'>5<br>");
+
+        out.println("<h3>3. Capital Of Maharashtra?</h3>");
+        out.println("<input type='radio' name='q3' value='Mumbai'>Mumbai<br>");
+        out.println("<input type='radio' name='q3' value='TamilNadu'>TamilNadu<br>");
+
+        out.println("<br><input type='submit' value='Submit'>");
+        out.println("</form>");
+        }
+    }
+}
+
+ResultServlet.java
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ResultServlet extends HttpServlet {
+ 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            int score = 0;
+            if ("Delhi".equals(request.getParameter("q1"))) score++;
+            if ("4".equals(request.getParameter("q2"))) score++;
+            if ("Mumbai".equals(request.getParameter("q3"))) score++;
+            out.println("<h1>Your Score: " + score + "/3</h1>");
+        }
+    }
+
+}
+
+---------------------------------------------------------------------------------------
+prac 10 : Develop simple JSP application to display values
+obtained from use of intrinsic objects.
+
+newjsp.jsp
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Fitness Training Planner</title>
-</head>
-
+    <head>
+        <title>JSP Page</title>
+    </head>
 <body>
-
-<h1 align="center">Fitness Training Planner</h1>
-<hr>
-
-<!-- Horizontal Menu -->
-<h2>Horizontal Menu</h2>
-
-<table border="1" width="100%">
-<tr align="center">
-<td><a href="#">Home</a></td>
-<td><a href="#">Workout Plan</a></td>
-<td><a href="#">Diet Plan</a></td>
-<td><a href="#">Progress</a></td>
-<td><a href="#">Trainer</a></td>
-<td><a href="#">Contact</a></td>
-</tr>
-</table>
-
-<br>
-<hr>
-
-<!-- Vertical Menu -->
-<h2>Vertical Menu</h2>
-
-<table border="1">
-<tr>
-<td>
-<ul>
-<li><a href="#">Dashboard</a></li>
-<li><a href="#">Daily Workout</a></li>
-<li><a href="#">Weekly Schedule</a></li>
-<li><a href="#">Exercise Library</a></li>
-<li><a href="#">Nutrition Guide</a></li>
-<li><a href="#">Track Progress</a></li>
-<li><a href="#">Settings</a></li>
-</ul>
-</td>
-
-<td width="400">
-<h3>Welcome to Fitness Training Planner</h3>
-
-<p>This app helps users plan their fitness training routine.</p>
-
-<p>You can create workout schedules, track progress and
-follow a healthy diet plan.</p>
-
-<h4>Features</h4>
-<ul>
-<li>Create daily workout plans</li>
-<li>View weekly exercise schedule</li>
-<li>Track fitness progress</li>
-<li>Follow nutrition guidelines</li>
-</ul>
-
-</td>
-</tr>
-</table>
-
-
-<h3>Create Your Workout Plan</h3>
-
-<form>
-<label>Choose Workout Type:</label><br>
-<select>
-<option>Cardio</option>
-<option>Strength Training</option>
-<option>Yoga</option>
-<option>HIIT</option>
-</select>
-
-<br><br>
-
-<label>Workout Duration:</label><br>
-<input type="text" placeholder="Minutes">
-
-<br><br>
-
-<label>Training Level:</label><br>
-<input type="radio" name="level"> Beginner
-<input type="radio" name="level"> Intermediate
-<input type="radio" name="level"> Advanced
-
-<br><br>
-
-<input type="submit" value="Save Plan">
-<input type="reset" value="Clear">
-
-</form>
-
-<hr>
-
-<p align="center">Fitness Training Planner App</p>
-
-</body>
-</html>
-
------------------------------------------------------------------------------
-
-prac 5
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Wedding Invitation</title>
-
-<style>
-
-body{
-font-family: Arial;
-background:#f5f5f5;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
-
-.card{
-width:350px;
-height:520px;
-background:white;
-border:3px solid #c8a96a;
-text-align:center;
-padding:30px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.title{
-font-size:20px;
-letter-spacing:2px;
-color:#c8a96a;
-}
-
-.names{
-font-size:32px;
-margin:40px 0;
-color:#8b5e3c;
-}
-
-.heart{
-font-size:22px;
-color:red;
-}
-
-.info{
-margin:25px 0;
-font-size:16px;
-}
-
-.footer{
-margin-top:40px;
-font-style:italic;
-color:#777;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="card" onclick="showMsg()">
-
-<div class="title">Wedding Invitation</div>
-
-<div class="names">
-Rahul <span class="heart"> WEDS </span> Priya
-</div>
-
-<p>Together with their families<br>
-invite you to celebrate their marriage</p>
-
-<div class="info">
- 14 June 2026
-</div>
-
-<div class="info">
- Rose Garden Hall<br>
-Mumbai
-</div>
-
-<div class="footer">
-Dinner & Celebration to follow
-</div>
-
-</div>
-
-<script>
-function showMsg(){
-alert("Welcome to Wedding Invitation");
-}
-</script>
-
-</body>
-</html>
-
------------------------------------------------------------------------------
-
-prac 6
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Typography and Readability</title>
-
-<style>
-
-body{
-font-family: Arial;
-padding:20px;
-}
-
-/* Poor Typography */
-.bad{
-font-size:12px;
-font-family:"Times New Roman";
-line-height:1;
-letter-spacing:2px;
-color:gray;
-padding:10px;
-margin-bottom:30px;
-}
-
-/* Good Typography */
-.good{
-font-size:18px;
-font-family:Arial;
-line-height:1.6;
-color:black;
-padding:10px;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<h2>Effect of Typography on Readability</h2>
-
-<h3>Poor Typography</h3>
-<div class="bad">
-My Name is Mayuresh and I am a student of Computer applications.
- I am learning about Human Computer Interaction and how typography affects readability.
-</div>
-
-<h3>Good Typography</h3>
-<div class="good">
-My Name is Mayuresh and I am a student of Computer applications.
- I am learning about Human Computer Interaction and how typography affects readability.
-</div>
-
-</body>
-</html>
-
-------------------------------------------------------------------------------
-prac 7 
-
-void main() {
-  runApp(MaterialApp(
-    home: TVRemote(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
-
-class TVRemote extends StatefulWidget {
-  @override
-  _TVRemoteState createState() => _TVRemoteState();
-}
-
-class _TVRemoteState extends State<TVRemote> {
-
-  String result = "TV Remote";
-
-  void press(String text){
-    setState(() {
-      result = text;
-    });
-  }
-
-  Widget btn(String name){
-    return ElevatedButton(
-      onPressed: () => press(name),
-      child: Text(name),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(result),
-        centerTitle: true,
-        backgroundColor: Colors.red,
-      ),
-
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              btn("Power On"),
-              SizedBox(width:10),
-              btn("Power Off"),
-            ],
-          ),
-
-          SizedBox(height:20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              btn("Vol+"),
-              SizedBox(width:10),
-              btn("Vol-"),
-            ],
-          ),
-
-          SizedBox(height:20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [btn("Up")],
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              btn("Left"),
-              SizedBox(width:20),
-              btn("OK"),
-              SizedBox(width:20),
-              btn("Right"),
-            ],
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [btn("Down")],
-          ),
-
-          SizedBox(height:20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              btn("Back"),
-              SizedBox(width:10),
-              btn("Menu"),
-            ],
-          ),
-
-        ],
-      ),
-    );
-  }
-}
-
-------------------------------------------------------------------------
-
-prac 8
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Gym Trainer</title>
-
-<style>
-body{
-font-family: Arial;
-margin:0;
-}
-
-/* Navbar */
-nav{
-background:black;
-color:white;
-padding:10px;
-text-align:center;
-}
-
-/* Sections */
-.section{
-padding:30px;
-text-align:center;
-}
-
-.btn{
-background:red;
-color:white;
-padding:10px;
-border:none;
-cursor:pointer;
-}
-</style>
-
-</head>
-
-<body>
-
-<nav>
-<h2>Rahul Fitness Trainer</h2>
-</nav>
-
-<div class="section">
-<h2>Welcome</h2>
-<p>Transform your body with professional training</p>
-<button class="btn" onclick="join()">Join Now</button>
-</div>
-
-<div class="section">
-<h2>About Me</h2>
-<p>I am a certified gym trainer with 5+ years of experience in fitness and bodybuilding.</p>
-</div>
-
-<div class="section">
-<h2>Services</h2>
-<p>Personal Training<br>
-Weight Loss<br>
-Muscle Gain</p>
-</div>
-
-<div class="section">
-<h2>Contact</h2>
-<p>Phone: 9876543210<br>Email: trainer@gmail.com</p>
-</div>
-
-<script>
-function join(){
-alert("Thank you for joining!");
-}
-</script>
-
+    <h1>Use of Intrinsic Objects in JSP</h1>
+    <h1>Request Object </h1>
+    Query String <%=request.getQueryString() %><br>
+    Context Path <%=request.getContextPath() %><br>
+    Remote Host <%=request.getRemoteHost() %><br>
+    <h1>Response Object </h1>
+    Character Encoding Type <%=response.getCharacterEncoding() %><br>
+    Content Type <%=response.getContentType() %><br>
+    Locale <%=response.getLocale() %><br>
+    <h1>Session Object </h1>
+    ID <%=session.getId() %><br>
+    Creation Time <%=new java.util.Date(session.getCreationTime()) %><br>
+    Last Access Time<%=new java.util.Date(session.getLastAccessedTime()) %><br>
 </body>
 </html>
 
 ------------------------------------------------------------------------------------
- 
-pract 10
+
+prac 11: Create a simple calculator application using JSP.
+
+index.html
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Calculator</title>
+    </head>
+<body>
+    <h2>Simple Calculator</h2>
+    <form action="calc.jsp">
+    Enter First Number:
+    <input type="text" name="n1"><br><br>
+    Enter Second Number:
+    <input type="text" name="n2"><br><br>
+    Select Operation:<br>
+    <input type="radio" name="op" value="+">Addition<br>
+    <input type="radio" name="op" value="-">Subtraction<br>
+    <input type="radio" name="op" value="*">Multiply<br>
+    <input type="radio" name="op" value="/">Divide<br><br>
+
+    <input type="submit" value="Calculate">
+</form>
+</body>
+</html>
+
+calc.jsp
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Result</h2>
+<%
+    double n1 = Double.parseDouble(request.getParameter("n1"));
+    double n2 = Double.parseDouble(request.getParameter("n2"));
+    String op = request.getParameter("op");
+    double result = 0;
+    if(op.equals("+"))
+        result = n1 + n2;
+    else if(op.equals("-"))
+        result = n1 - n2;
+    else if(op.equals("*"))
+        result = n1 * n2;
+    else if(op.equals("/"))
+        result = n1 / n2;
+
+    out.println("<h3>Result = " + result + "</h3>");
+%>
+</body>
+</html>
+
+------------------------------------------------------------------------------
+
+prac 12 : Develop a simple JSP application to pass values from one
+page to another with validations. (Name-txt, age-txt,
+hobbies-checkbox, email-txt, gender-radio button).
+
+index.html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>User Information Page</title>
+    </head>
+<body>
+    <form action="Validate.jsp">
+        Enter Your Name<input type="text" name="name" ><br>
+        Enter Your Age<input type="text" name="age" ><br>
+        Select Hobbies<br>
+        <input type="checkbox" name="hob" value="Singing">Singing<br>
+        <input type="checkbox" name="hob" value="Reading">Reading Books<br>
+        <input type="checkbox" name="hob" value="Football">Playing Football<br>
+        Enter E-mail<input type="text" name="email" ><br>
+        Select Gender<br>
+        <input type="radio" name="gender" value="male">Male<br>
+        <input type="radio" name="gender" value="female">Female<br>
+        <input type="radio" name="gender" value="other">Other<br>
+        <input type="hidden" name="error" value="">
+        <input type="submit" value="Submit Form">
+    </form>
+</body>
+</html>
+
+Validate.jsp
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JSP Page</title>
+    </head>
+<body>
+    <h1>Validation Page</h1>
+    <jsp:useBean id="obj" scope="request" 
+    class="mypack.CheckerBean" >
+    <jsp:setProperty name="obj" property="*"/>
+    </jsp:useBean>
+    <%if (obj.validate())
+        { %>
+    <jsp:forward page="successful.jsp"/>
+    <% }
+    else {%>
+    <jsp:include page="index.html"/>
+    <%}%>
+    <%=obj.getError() %>
+</body>
+</html>
+
+CheckerBean.java
+
+package mypack;
+
+
+public class CheckerBean {
+    private String name, age, hob, email, gender, error;
+    public CheckerBean(){error="";}
+    public void setName(String n){name=n;}
+    public void setAge(String a){age=a;}
+    public void setHob(String h){hob=h;}
+    public void setEmail(String e){email=e;}
+    public void setGender(String g){gender=g;}
+    public void setError(String e){error=e;}
+    public String getName(){return name;}
+    public String getAge(){return age;}
+    public String getHob(){return hob;}
+    public String getEmail(){return email;}
+    public String getGender(){return gender;}
+    public String getError(){return error;}
+    public boolean validate(){
+    boolean res=true;
+    if(name == null || name.trim().equals("")) {error+="<br><font color='red'>Enter First Name</font>";res=false;}
+    if(age == null || age.length() > 2)
+    {error+="<br><font color='red'>Age Invalid</font>";res=false;}
+    return res;
+ }
+}
+
+successful.jsp
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h2>Form Submitted Successfully </h2>
+
+</body>
+</html>
+
+--------------------------------------------------------------------------------------
+
+prac14: Create a Currency Converter application using EJB.
+
+index.html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Currency Converter</title>
+    </head>
+<body>
+    <form action="CCServlet" method="post">
+        Enter Amount <input type="text" name="amt"><br>
+        Select Conversion Type
+        <input type="radio" name="type" value="r2d" checked>Rupees to Dollar
+        <input type="radio" name="type" value="d2r" >Dollor to Rupees<br>
+        <input type="reset" ><input type="submit" value="CONVERT" >
+    </form>
+</body>
+</html>
+
+CCServlet.java
+package mybeans;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CCServlet extends HttpServlet {
+    @EJB CCBean obj;
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            double amt = Double.parseDouble(request.getParameter("amt"));
+            if(request.getParameter("type").equals("r2d"))
+            {
+            out.println("<h1>"+amt+ " Rupees = "+obj.r2Dollor(amt)+" Dollors</h1>");
+            }
+            if(request.getParameter("type").equals("d2r"))
+            {
+            out.println("<h1>"+amt+ " Dollors = "+obj.d2Rupees(amt)+" Rupees</h1>");
+        }
+    }  
+}
+}
+
+CCBean.java
+
+package mybeans;
+import javax.ejb.Stateless;
+@Stateless
+public class CCBean {
+
+    public CCBean(){}
+    public double r2Dollor(double r){ return r/65.65; }
+    public double d2Rupees(double d){ return d*65.65; }
+}
+
+
+prac 5 : create a registration servlet in java using JDBC
+
+MySql queries
+
+create database LoginDB;
+use LoginDB;
+create table user(username varchar(20) PRIMARY KEY, password varchar(20), email varchar(20), 
+country varchar(20));
+insert into user values ('admin','admin','admin@admin.com','India');
+select * from user;
+
+
+<html>
 <head>
-<title>UMTEL Evaluation</title>
-
-<style>
-body{
-font-family: Arial;
-text-align:center;
-}
-
-.box{
-border:1px solid gray;
-width:320px;
-margin:auto;
-padding:20px;
-}
-
-button{
-margin:5px;
-padding:5px 10px;
-}
-</style>
-
+<title>Registration Page</title>
 </head>
 
 <body>
 
-<h2>Usability Evaluation</h2>
+<form action="RegisterServlet">
 
-<div class="box">
+<h1>Welcome to Registration page</h1>
 
-<h3 id="q">Question</h3>
+Enter User Name:
+<input type="text" name="txtUid"><br>
 
-<button onclick="ans(5)">Very Good</button>
-<button onclick="ans(4)">Good</button>
-<button onclick="ans(3)">Average</button>
-<button onclick="ans(2)">Poor</button>
-<button onclick="ans(1)">Very Poor</button>
+Enter Password:
+<input type="password" name="txtPass"><br>
 
-</div>
+Enter Email:
+<input type="text" name="txtEmail"><br>
 
-<h3 id="result">Score: 0%</h3>
+Enter Country:
+<input type="text" name="txtCon"><br>
 
-<script>
+<input type="reset">
+<input type="submit" value="REGISTER">
 
-let questions = [
-"Website is easy to use",
-"Content is well organized",
-"Navigation is simple",
-"Text is readable",
-"Links are working properly"
-];
-
-let i = 0;
-let score = 0;
-
-document.getElementById("q").innerHTML = questions[i];
-
-function ans(v){
-score += v;
-i++;
-
-let percent = (score/(i*5))*100;
-
-document.getElementById("result").innerHTML =
-"Score: "+percent.toFixed(0)+"%";
-
-if(i < questions.length){
-document.getElementById("q").innerHTML = questions[i];
-}
-else{
-document.getElementById("q").innerHTML = "Evaluation Completed";
-}
-}
-
-</script>
+</form>
 
 </body>
 </html>
+
+
+Register servlet 
+
+import java.io.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class RegisterServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        String id = request.getParameter("txtUid");
+        String ps = request.getParameter("txtPass");
+        String em = request.getParameter("txtEmail");
+        String co = request.getParameter("txtCon");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/LoginDB", "root", ""
+            );
+
+            PreparedStatement pst = con.prepareStatement(
+                "insert into user values(?,?,?,?)"
+            );
+
+            pst.setString(1, id);
+            pst.setString(2, ps);
+            pst.setString(3, em);
+            pst.setString(4, co);
+
+            int row = pst.executeUpdate();
+
+            out.println("<h1>" + row + " Inserted Successfully</h1>");
+
+        } catch(Exception e) {
+            out.println(e);
+        }
+    }
+}
+
+    
+
+
+
+
 
