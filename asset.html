@@ -1,924 +1,202 @@
-prac 1 : Create a simple calculator application using servlet.
+prac 1 :Implementation of Decision Tree 
 
-index.html
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form action="calc" method="get">
-            Enter 1st num <input type="text" name="txtN1"><br>
-            Enter 2nd num <input type="text" name="txtN2"><br>
-            Select an Operation <br>
-            <input type="radio" name="opr" value="+">Add
-            <input type="radio" name="opr" value="-">Sub
-            <input type="radio" name="opr" value="*">Multiply
-            <input type="radio" name="opr" value="/">Divide<br>
-            <input type="reset">
-            <input type="submit" value="Calculate">
-    </body>
-</html>
-
-clac.java (servlet)
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class calc extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            double n1 = Double.parseDouble(request.getParameter("txtN1"));
-                double n2 = Double.parseDouble(request.getParameter("txtN2"));
-                double result = 0;
-                String opr = request.getParameter("opr");
-                if(opr.equals("+")) result=n1+n2;
-                if(opr.equals("-")) result=n1-n2;
-                if(opr.equals("*")) result=n1*n2;
-                if(opr.equals("/")) result=n1/n2;
-                out.println("<h1>Result"+result);
-        }
-    }
-}
-
--------------------------------------------------------------------------------------------
-
-prac 2: Create a simple servlet application to find entered number is Even or Odd.
-
-index.html
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form action="oddeven" method="post" >
-            enter a number: <input type="text" name="num"><br>
-            <input type="submit" value="check">
-            
-        </form>
-    </body>
-</html>
-
-oddeven.java (servlet)
-
-package my;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-public class oddeven extends HttpServlet {
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+str(iris)
+set.seed(1234)
+ind <- sample(2, nrow(iris), replace=TRUE, prob=c(0.7, 0.3))
+trainData <- iris[ind==1,]
+testData <- iris[ind==2,]
+library(party) 
+install.packages("party") 
+install.packages("partykit")
  
-            int number = Integer.parseInt(request.getParameter("num"));
-            if(number%2==0){
-                out.println("This is the Even Number");
-            }
-            else{
-                out.println("This is the Odd Number");
-            }
-        }
-    }
-------------------------------------------------------------------------------------------
+library(party)
+myFormula <- Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width
 
-prac 3 : Create a simple servlet application to find Factorial of entered.
+iris_ctree <- ctree(myFormula, data=trainData)
+table(predict(iris_ctree), trainData$Species)
+plot(iris_ctree)
 
-index.html
+plot(iris_ctree, type="simple")
+testPred <- predict(iris_ctree, newdata = testData)
+table(testPred, testData$Species)
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Factorial</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form action="fact" method="post">
-        Enter the Number
-        <input type="text" size="20" name="text"><br><br>
-        <input type="submit" value="submit">
-        </form>
-    </body>
-</html>
+-------------------------------------------------------------------
 
-fact.java(servlet)
+prac 2 : Perform Text Preprocessing and Generate Word Cloud using tm Package in R
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+install.packages("tm")
+install.packages("wordcloud")
+install.packages("SnowballC")
+library(tm)
+library(wordcloud)
+library(SnowballC)
+text <- c(
+  "Data science is an interdisciplinary field",
+  "Text mining is useful for analyzing documents",
+  "Word clouds visualize frequent words",
+  "R programming is powerful for data analysis"
+)
 
-public class fact extends HttpServlet {
+corpus <- Corpus(VectorSource(text))
+corpus <- tm_map(corpus, content_transformer(tolower))
+corpus <- tm_map(corpus, removePunctuation)
+corpus <- tm_map(corpus, removeNumbers)
+corpus <- tm_map(corpus, removeWords, stopwords("english"))
+corpus <- tm_map(corpus, stripWhitespace)
+corpus <- tm_map(corpus, stemDocument)
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-        
-            String s = request.getParameter("text");
-            int num = Integer.parseInt(s);
-            long factorial = 1;
-            if (num<0){
-            out.println("factorial is not defined for negative numbers");
-            }
-            else{
-            for(int i=1; i<=num; i++){
-            factorial = factorial*i;
-            }
-            out.println("factorial "+num+" is: "+factorial);
-          }
-    	}
-      }
-}
+dtm <- DocumentTermMatrix(corpus)
+inspect(dtm)
 
-------------------------------------------------------------------------------------------
+matrix <- as.matrix(dtm)
+word_freq <- sort(colSums(matrix), decreasing = TRUE)
+wordcloud(
+  names(word_freq),
+  word_freq,
+  min.freq = 1, 
+  random.order = FALSE,
+  colors = rainbow(10)
+) 
 
-pract 4 : Create a servlet for a login page. If the username and password are correct then it says message “Hello <username>” else a message “login failed”
+--------------------------------------------------------------------
 
-index.html
+prac 3: Compute mean, median, standard deviation and generate histograms/boxplots using R.
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login Form</title>
-    </head>
-    <body>
-<form action="LoginServlet" method="Get">
- Enter User ID<input type="text" name="txtId"><br>
- Enter Password<input type="password" name="txtPass"><br>
-<input type="reset"><input type="submit" value=" Click to Login " >
-</form>
-    </body>
-</html>
+data <- c(10,15,20,25,30,35,40,45,50)
+mean(data)
+sd(data)
 
-LoginServlet (servlet)
+hist(data,
+main="Histogram of Data",
+xlab="Values",
+col="lightblue",
+border="black")
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+boxplot(data,
+main="Boxplot of Data",
+col="lightgreen",
+horizontal=TRUE)
 
-public class LoginServlet extends HttpServlet {
+summary(data)
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-          
-            String uname = request.getParameter("txtId");
-            String upass = request.getParameter("txtPass");
-            if(uname.equals("admin") && upass.equals("12345")){
-            out.println("<body bgcolor=blue >");
-            out.println("<h1> Welcome !!! "+uname+"</h1>");
-            }
-            else{
-            out.println("<body bgcolor=red >");out.println("<h1> Login Fail !!! </h1>");
-            }
-        }
-    }
+-----------------------------------------------------------------
+prac 4: Linear regression Using Im function
 
-}
+hours <- c(1, 2, 3, 4, 5)
+scores <- c(50, 55, 65, 70, 75)
 
-------------------------------------------------------------------------------------------
+data <- data.frame(hours, scores)
+print(data)
 
+model <- lm(scores ~ hours, data = data)
+summary(model)
 
-prac 6: Using Request Dispatcher Interface create a Servlet which will validate the passwordentered by the user, if 
-the user has entered "Servlet" as password, then he will
-be forwarded to Welcome Servlet else the user will stay
-on the index.html page and anerror message will be
-displayed.
+new_data <- data.frame(hours = 6)
+predict(model, new_data) 
 
-index.html
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login Form</title>
-    </head>
-    <body>
-        <form action="LoginServlet" method="get" >
-        Enter User ID<input type="text" name="txtId"><br>
-        Enter Password<input type="password" name="txtPass"><br>
-        <input type="reset">
-        <input type="submit" value=" Click to Login " >
-</form>
-    </body>
-</html>
+plot(data$hours, data$scores,
+main = "Linear Regression Example",
+xlab = "Study Hours",
+ylab = "Scores",
+pch = 16)
 
-LoginServlet
+abline(model, col = "blue")
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+---------------------------------------------------------------------
+prac 5:Association Rule using Titanic.Raw
 
-public class LoginServlet extends HttpServlet {
+str(Titanic) 
+df <- as.data.frame(Titanic) 
+head(df) 
+titanic.raw <- NULL 
+for(i in 1:4) {  titanic.raw <- cbind(titanic.raw, rep(as.character(df[,i]), df$Freq))  } 
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            String uname = request.getParameter("txtId");
-            String upass = request.getParameter("txtPass");
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            if(uname.equals("admin") && upass.equals("123456")){
-            RequestDispatcher rd = request.getRequestDispatcher("WelcomeServlet");
-            rd.forward(request, response);
-            }
-            else{
-            out.println("<body bgcolor=red >");
-            out.println("<h1> Login Fail !!! </h1>");
-            RequestDispatcher rd = request.getRequestDispatcher("index.html");
-            rd.include(request, response);
- }
-        }
-    }
-}
+titanic.raw <- as.data.frame(titanic.raw)  
+names(titanic.raw) <- names(df)[1:4] 
+dim(titanic.raw) 
+str(titanic.raw) 
+head(titanic.raw) 
+summary(titanic.raw) 
 
-WelcomeServlet
+---------------------------------------------------------------------
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+prac 6: K Means Clustering 
 
-public class WelcomeServlet extends HttpServlet {
-    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String uname = request.getParameter("txtId");
-            out.println("<body bgcolor=green >");
-            out.println("<h1>Welcome " + uname + "</h1>");
-            out.println("<h2>Login Successful</h2>");
-        }
-    }
-}
+iris2 <- iris
+iris2$Species <- NULL
+(kmeans.result <- kmeans(iris2, 3))
+table(iris$Species, kmeans.result$cluster)
+
+plot(iris2[c("Sepal.Length", "Sepal.Width")], col = kmeans.result$cluster)
+
+points(kmeans.result$centers[,c("Sepal.Length", "Sepal.Width")], col = 1:3, pch = 8, cex=2)
+
+------------------------------------------------------------------------
+
+prac 7: Time Series Analysis using Airpassengers 
+
+a <- ts (1:30, frequency=12, start=c (2011,3))	
+print(a)
+str(a)
+attributes(a)
+plot (AirPassengers)
+
+apts <- ts (AirPassengers, frequency=12)
+f <- decompose(apts)
+f$figure
+plot (f$figure, type="b", xaxt="n", xlab="")
+
+fit <- arima(AirPassengers, order=c(1,0,0), list(order=c(2,1,0), period=12))
+fore <- predict(fit, n.ahead=24)
+U <- fore$pred + 2*fore$se
+L <- fore$pred - 2*fore$se
+ts.plot(AirPassengers, fore$pred, U, L, col=c(1,2,4,4), lty = c(1,1,2,2))
 
 ---------------------------------------------------------------------------
 
-prac 7: Create a servlet that uses Cookies to store the number of
-times a user has visited servlet.
-
-index.html
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cookie Demo</title>
-</head>
-<body>
-    <form action="Page1" method="get">
-    Enter Your Name <input type="text" name="txtName"><br>
-    <input type="submit" value="Click to Enter">
-    </form>
-</body>
-</html>
-
-Page1
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class Page1 extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-
-            out.println("<body bgcolor=pink >");
-            String uname = request.getParameter("txtName");
-            out.println("<h1>~~~ Welcome "+uname+"</h1>");
-            Cookie ck1 = new Cookie("username", uname);
-            Cookie ck2 = new Cookie("visit","1");
-            response.addCookie(ck1); 
-	    response.addCookie(ck2);
-            out.println("<h1><a href=Page2 >Click to visit Page 2 </a></h1>");
- 
-        }
-    }
-
-
-}
-
-Page2
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-public class Page2 extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            out.println("<body bgcolor=yellow >");
-            Cookie [] ck = request.getCookies();
-            for(int i=0;i<ck.length;i++){
-            if(ck[i].getName().equals("visit")){
-            int count = Integer.parseInt(ck[i].getValue())+1;
-            out.println("<h1>Visit No : "+count+"</h1>");
-            ck[i] = new Cookie("visit",count+"");
-            response.addCookie(ck[i]);
-            }
-            else {
-            out.println(ck[i].getName()+ " = "+ck[i].getValue()); }
-           
-        }
-    }
-
-    }
-}
-
-------------------------------------------------------------------------------------
-
-prac 8: Create a servlet demonstrating the use of session creation
-and destruction. Also check whether the user has visited
-this page first time or has visited earlier also using
-sessions.
-
-index.html
-
-<!DOCTYPE html>
-<html> 
-<head>
-    <title>Session Demo</title>
-</head>
-<form action="Page1" method="get" >
- Enter User ID <input type="text" name="txtName"><br>
-<input type="reset" ><input type="submit" >
-</form>
-
-    </body>
-</html>
-
-Page1.java
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-public class Page1 extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HttpSession hs = request.getSession(true);
-            if(hs.isNew()){
-            out.println("<body bgcolor=yellow>");
-            String name = request.getParameter("txtName");
-            hs.setAttribute("uname", name);
-            hs.setAttribute("visit", "1");
-            out.println("<h1>Welcome First Time</h1>");
-            }
-            else{
-            out.println("<h1>Welcome Again</h1>");
-            int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1;
-            out.println("<h1>You Visited "+visit+"Times</h1>");
-            hs.setAttribute("visit", ""+visit);
-            }
-            out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>");
-            out.println("<h1><a href=LogoutServlet>Click to Terminate Session </a></h1>");
-            
-        }
-    }
-
-}
-
-page2.java
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-public class Page2 extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HttpSession hs = request.getSession(false);
-            out.println("<h1>Welcome Again on Page No. 2</h1>");
-            int visit = Integer.parseInt((String)hs.getAttribute("visit"))+1;
-            out.println("<h1>You Visited "+visit+"Times</h1>");
-            hs.setAttribute("visit", ""+visit);
-            out.println("<h1>Your Session ID "+hs.getId()+"</h1>");
-            out.println("<h1>You Logged in at "+new java.util.Date(hs.getCreationTime())+"</h1>");
-            out.println("<h1><a href=Page1>Click for Page 1 </a></h1>");
-            out.println("<h1><a href=Page3>Click for Page 3 </a></h1>");
-            out.println("<h1><a href=Page4>Click for Page 4 </a></h1>");
-            out.println("<h1><a href=LogoutServlet>Click for Terminate Session </a></h1>");
-        }
-    }
-
-    
-}
-
-LogoutServle.java
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class LogoutServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            javax.servlet.http.HttpSession hs = request.getSession();
-            if(hs != null) hs.invalidate();
-            out.println("<h1>You are Logged out now........</h1>");
-        }
-    }
-
-    
-
-}
-
----------------------------------------------------------------------------------------
-prac9 : Develop Simple Servlet Question Answer ( Quiz )
-Application.
-
-index.html
-
-<!DOCTYPE html>
-<html>
-    <head>
-    <title>Quiz App</title>
-    </head>
-    <body>
-    <h1>Welcome to Quiz</h1>
-    <a href="QuizServlet">Start Quiz</a>
-</body>
-</html>
-
-QuizServlet.java
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class QuizServlet extends HttpServlet {
-  
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-             out.println("<form action='ResultServlet'>");
-    
-        out.println("<h3>1. Capital of India?</h3>");
-        out.println("<input type='radio' name='q1' value='Delhi'>Delhi<br>");
-        out.println("<input type='radio' name='q1' value='Mumbai'>Mumbai<br>");
-
-        out.println("<h3>2. 2 + 2 = ?</h3>");
-        out.println("<input type='radio' name='q2' value='4'>4<br>");
-        out.println("<input type='radio' name='q2' value='5'>5<br>");
-
-        out.println("<h3>3. Capital Of Maharashtra?</h3>");
-        out.println("<input type='radio' name='q3' value='Mumbai'>Mumbai<br>");
-        out.println("<input type='radio' name='q3' value='TamilNadu'>TamilNadu<br>");
-
-        out.println("<br><input type='submit' value='Submit'>");
-        out.println("</form>");
-        }
-    }
-}
-
-ResultServlet.java
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class ResultServlet extends HttpServlet {
- 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            int score = 0;
-            if ("Delhi".equals(request.getParameter("q1"))) score++;
-            if ("4".equals(request.getParameter("q2"))) score++;
-            if ("Mumbai".equals(request.getParameter("q3"))) score++;
-            out.println("<h1>Your Score: " + score + "/3</h1>");
-        }
-    }
-
-}
-
----------------------------------------------------------------------------------------
-prac 10 : Develop simple JSP application to display values
-obtained from use of intrinsic objects.
-
-newjsp.jsp
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>JSP Page</title>
-    </head>
-<body>
-    <h1>Use of Intrinsic Objects in JSP</h1>
-    <h1>Request Object </h1>
-    Query String <%=request.getQueryString() %><br>
-    Context Path <%=request.getContextPath() %><br>
-    Remote Host <%=request.getRemoteHost() %><br>
-    <h1>Response Object </h1>
-    Character Encoding Type <%=response.getCharacterEncoding() %><br>
-    Content Type <%=response.getContentType() %><br>
-    Locale <%=response.getLocale() %><br>
-    <h1>Session Object </h1>
-    ID <%=session.getId() %><br>
-    Creation Time <%=new java.util.Date(session.getCreationTime()) %><br>
-    Last Access Time<%=new java.util.Date(session.getLastAccessedTime()) %><br>
-</body>
-</html>
-
-------------------------------------------------------------------------------------
-
-prac 11: Create a simple calculator application using JSP.
-
-index.html
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Calculator</title>
-    </head>
-<body>
-    <h2>Simple Calculator</h2>
-    <form action="calc.jsp">
-    Enter First Number:
-    <input type="text" name="n1"><br><br>
-    Enter Second Number:
-    <input type="text" name="n2"><br><br>
-    Select Operation:<br>
-    <input type="radio" name="op" value="+">Addition<br>
-    <input type="radio" name="op" value="-">Subtraction<br>
-    <input type="radio" name="op" value="*">Multiply<br>
-    <input type="radio" name="op" value="/">Divide<br><br>
-
-    <input type="submit" value="Calculate">
-</form>
-</body>
-</html>
-
-calc.jsp
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<body>
-<h2>Result</h2>
-<%
-    double n1 = Double.parseDouble(request.getParameter("n1"));
-    double n2 = Double.parseDouble(request.getParameter("n2"));
-    String op = request.getParameter("op");
-    double result = 0;
-    if(op.equals("+"))
-        result = n1 + n2;
-    else if(op.equals("-"))
-        result = n1 - n2;
-    else if(op.equals("*"))
-        result = n1 * n2;
-    else if(op.equals("/"))
-        result = n1 / n2;
-
-    out.println("<h3>Result = " + result + "</h3>");
-%>
-</body>
-</html>
-
-------------------------------------------------------------------------------
-
-prac 12 : Develop a simple JSP application to pass values from one
-page to another with validations. (Name-txt, age-txt,
-hobbies-checkbox, email-txt, gender-radio button).
-
-index.html
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>User Information Page</title>
-    </head>
-<body>
-    <form action="Validate.jsp">
-        Enter Your Name<input type="text" name="name" ><br>
-        Enter Your Age<input type="text" name="age" ><br>
-        Select Hobbies<br>
-        <input type="checkbox" name="hob" value="Singing">Singing<br>
-        <input type="checkbox" name="hob" value="Reading">Reading Books<br>
-        <input type="checkbox" name="hob" value="Football">Playing Football<br>
-        Enter E-mail<input type="text" name="email" ><br>
-        Select Gender<br>
-        <input type="radio" name="gender" value="male">Male<br>
-        <input type="radio" name="gender" value="female">Female<br>
-        <input type="radio" name="gender" value="other">Other<br>
-        <input type="hidden" name="error" value="">
-        <input type="submit" value="Submit Form">
-    </form>
-</body>
-</html>
-
-Validate.jsp
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>JSP Page</title>
-    </head>
-<body>
-    <h1>Validation Page</h1>
-    <jsp:useBean id="obj" scope="request" 
-    class="mypack.CheckerBean" >
-    <jsp:setProperty name="obj" property="*"/>
-    </jsp:useBean>
-    <%if (obj.validate())
-        { %>
-    <jsp:forward page="successful.jsp"/>
-    <% }
-    else {%>
-    <jsp:include page="index.html"/>
-    <%}%>
-    <%=obj.getError() %>
-</body>
-</html>
-
-CheckerBean.java
-
-package mypack;
-
-
-public class CheckerBean {
-    private String name, age, hob, email, gender, error;
-    public CheckerBean(){error="";}
-    public void setName(String n){name=n;}
-    public void setAge(String a){age=a;}
-    public void setHob(String h){hob=h;}
-    public void setEmail(String e){email=e;}
-    public void setGender(String g){gender=g;}
-    public void setError(String e){error=e;}
-    public String getName(){return name;}
-    public String getAge(){return age;}
-    public String getHob(){return hob;}
-    public String getEmail(){return email;}
-    public String getGender(){return gender;}
-    public String getError(){return error;}
-    public boolean validate(){
-    boolean res=true;
-    if(name == null || name.trim().equals("")) {error+="<br><font color='red'>Enter First Name</font>";res=false;}
-    if(age == null || age.length() > 2)
-    {error+="<br><font color='red'>Age Invalid</font>";res=false;}
-    return res;
- }
-}
-
-successful.jsp
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<body>
-
-    <h2>Form Submitted Successfully </h2>
-
-</body>
-</html>
-
---------------------------------------------------------------------------------------
-
-prac14: Create a Currency Converter application using EJB.
-
-index.html
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Currency Converter</title>
-    </head>
-<body>
-    <form action="CCServlet" method="post">
-        Enter Amount <input type="text" name="amt"><br>
-        Select Conversion Type
-        <input type="radio" name="type" value="r2d" checked>Rupees to Dollar
-        <input type="radio" name="type" value="d2r" >Dollor to Rupees<br>
-        <input type="reset" ><input type="submit" value="CONVERT" >
-    </form>
-</body>
-</html>
-
-CCServlet.java
-package mybeans;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.ejb.EJB;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class CCServlet extends HttpServlet {
-    @EJB CCBean obj;
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            double amt = Double.parseDouble(request.getParameter("amt"));
-            if(request.getParameter("type").equals("r2d"))
-            {
-            out.println("<h1>"+amt+ " Rupees = "+obj.r2Dollor(amt)+" Dollors</h1>");
-            }
-            if(request.getParameter("type").equals("d2r"))
-            {
-            out.println("<h1>"+amt+ " Dollors = "+obj.d2Rupees(amt)+" Rupees</h1>");
-        }
-    }  
-}
-}
-
-CCBean.java
-
-package mybeans;
-import javax.ejb.Stateless;
-@Stateless
-public class CCBean {
-
-    public CCBean(){}
-    public double r2Dollor(double r){ return r/65.65; }
-    public double d2Rupees(double d){ return d*65.65; }
-}
-
-
-prac 5 : create a registration servlet in java using JDBC
-
-MySql queries
-
-create database LoginDB;
-use LoginDB;
-create table user(username varchar(20) PRIMARY KEY, password varchar(20), email varchar(20), 
-country varchar(20));
-insert into user values ('admin','admin','admin@admin.com','India');
-select * from user;
-
-
-<html>
-<head>
-<title>Registration Page</title>
-</head>
-
-<body>
-
-<form action="RegisterServlet">
-
-<h1>Welcome to Registration page</h1>
-
-Enter User Name:
-<input type="text" name="txtUid"><br>
-
-Enter Password:
-<input type="password" name="txtPass"><br>
-
-Enter Email:
-<input type="text" name="txtEmail"><br>
-
-Enter Country:
-<input type="text" name="txtCon"><br>
-
-<input type="reset">
-<input type="submit" value="REGISTER">
-
-</form>
-
-</body>
-</html>
-
-
-Register servlet 
-
-import java.io.*;
-import java.sql.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-public class RegisterServlet extends HttpServlet {
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
-        String id = request.getParameter("txtUid");
-        String ps = request.getParameter("txtPass");
-        String em = request.getParameter("txtEmail");
-        String co = request.getParameter("txtCon");
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/LoginDB", "root", ""
-            );
-
-            PreparedStatement pst = con.prepareStatement(
-                "insert into user values(?,?,?,?)"
-            );
-
-            pst.setString(1, id);
-            pst.setString(2, ps);
-            pst.setString(3, em);
-            pst.setString(4, co);
-
-            int row = pst.executeUpdate();
-
-            out.println("<h1>" + row + " Inserted Successfully</h1>");
-
-        } catch(Exception e) {
-            out.println(e);
-        }
-    }
-}
-
-    
-
-
-
-
+prac 8: Develop a Simple Recommendation System using recommenderlab in R
+
+install.packages("recommenderlab")
+library(recommenderlab)
+
+ratings_matrix <- matrix(c(
+5,NA,3,1,
+4,2,NA,1,
+1,2,3,5,
+NA,3,4,4
+),nrow = 4, byrow = TRUE)
+
+colnames (ratings_matrix) <- c("Item1", "Item2", "Item3", "Item4")
+rownames (ratings_matrix) <- c("User1", "User2", "User3", "User4")
+ratings_matrix
+
+ratings <- as (ratings_matrix, "realRatingMatrix")
+ratings
+rec_model <- Recommender (ratings, method = "UBCF")
+rec_model
+
+recommendations <- predict(rec_model, ratings, n = 2)
+as(recommendations, "list")
+
+recommended_items <- as(recommendations, "list")
+print(recommended_items)
+
+-----------------------------------------------------------------------
+
+prac 9 : Implement Anomaly Detection using Isolation Forest in R
+
+install.packages("isotree")
+library(isotree)
+data <-data.frame(
+transactions = c(100,120,130,150,170,200,500,210,220,230)
+)
+data
+
+model <- isolation.forest(data, sample_size = 10, ntrees = 100)
+scores <- predict(model, data)
+scores
+
+data$anomaly_score <- scores
+data$anomaly <- ifelse(data$anomaly_score > 0.6, "Anomaly", "Normal") 
+print(data)
 
